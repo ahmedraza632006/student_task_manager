@@ -50,7 +50,6 @@ const StudentTaskManagerApp({super.key});
     );
   }
 }
-}
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
