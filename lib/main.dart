@@ -623,3 +623,68 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
+class StudentTask {
+  StudentTask({
+    required this.title,
+    required this.subject,
+    this.priority = 'Medium',
+    this.dueDate,
+    this.isCompleted = false,
+  });
+
+  final String title;
+  final String subject;
+  final String priority;
+  final DateTime? dueDate;
+  bool isCompleted;
+}
+
+String _formatTaskDate(DateTime date) {
+  const months = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  ];
+
+  return '${date.day} ${months[date.month - 1]} ${date.year}';
+}
+class TaskHomePage extends StatefulWidget {
+  const TaskHomePage({super.key});
+
+  @override
+  State<TaskHomePage> createState() => _TaskHomePageState();
+}
+
+class _TaskHomePageState extends State<TaskHomePage> {
+  final List<StudentTask> _tasks = [
+    StudentTask(
+      title: 'Complete HCI assignment',
+      subject: 'Human Computer Interaction',
+      isCompleted: true,
+    ),
+    StudentTask(
+      title: 'Study Flutter widgets',
+      subject: 'Mobile App Development',
+    ),
+    StudentTask(
+      title: 'Prepare lab report',
+      subject: 'Software Engineering',
+    ),
+  ];
+
+  String _selectedFilter = 'All';
+
+  int get _completedCount =>
+      _tasks.where((task) => task.isCompleted).length;
+
+  List<StudentTask> get _visibleTasks {
+    if (_selectedFilter == 'Completed') {
+      return _tasks.where((task) => task.isCompleted).toList();
+    }
+
+    if (_selectedFilter == 'Pending') {
+      return _tasks.where((task) => !task.isCompleted).toList();
+    }
+
+    return _tasks;
+  }
