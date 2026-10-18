@@ -9,7 +9,7 @@ const Color darkColor = Color(0xFF202044);
 const Color backgroundColor = Color(0xFFF6F7FB);
 
 class StudentTaskManagerApp extends StatelessWidget {
-const StudentTaskManagerApp({super.key});
+  const StudentTaskManagerApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +39,7 @@ const StudentTaskManagerApp({super.key});
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
-            borderSide: const BorderSide(
-              color: primaryColor,
-              width: 1.5,
-            ),
+            borderSide: const BorderSide(color: primaryColor, width: 1.5),
           ),
         ),
       ),
@@ -73,20 +70,12 @@ class _WelcomePageState extends State<WelcomePage>
       vsync: this,
     );
 
-    _fadeAnimation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeIn,
-    );
+    _fadeAnimation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
 
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0, 0.12),
       end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeOutCubic,
-      ),
-    );
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
 
     _controller.forward();
   }
@@ -105,11 +94,7 @@ class _WelcomePageState extends State<WelcomePage>
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFFF7F6FF),
-              Color(0xFFEEEAFE),
-              Colors.white,
-            ],
+            colors: [Color(0xFFF7F6FF), Color(0xFFEEEAFE), Colors.white],
           ),
         ),
         child: SafeArea(
@@ -126,8 +111,7 @@ class _WelcomePageState extends State<WelcomePage>
                       height: 180,
                       width: 180,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFDCD8FF)
-                            .withValues(alpha: 0.55),
+                        color: const Color(0xFFDCD8FF).withValues(alpha: 0.55),
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -139,16 +123,13 @@ class _WelcomePageState extends State<WelcomePage>
                       height: 145,
                       width: 145,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE6F7F2)
-                            .withValues(alpha: 0.8),
+                        color: const Color(0xFFE6F7F2).withValues(alpha: 0.8),
                         shape: BoxShape.circle,
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      26, 20, 26, 18,
-                    ),
+                    padding: const EdgeInsets.fromLTRB(26, 20, 26, 18),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -194,10 +175,7 @@ class _WelcomePageState extends State<WelcomePage>
                               gradient: const LinearGradient(
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
-                                colors: [
-                                  Color(0xFF7770F2),
-                                  primaryColor,
-                                ],
+                                colors: [Color(0xFF7770F2), primaryColor],
                               ),
                               borderRadius: BorderRadius.circular(56),
                               boxShadow: const [
@@ -216,8 +194,7 @@ class _WelcomePageState extends State<WelcomePage>
                                   right: 25,
                                   child: Icon(
                                     Icons.auto_awesome_rounded,
-                                    color: Colors.white
-                                        .withValues(alpha: 0.8),
+                                    color: Colors.white.withValues(alpha: 0.8),
                                     size: 28,
                                   ),
                                 ),
@@ -225,13 +202,12 @@ class _WelcomePageState extends State<WelcomePage>
                                   height: 135,
                                   width: 135,
                                   decoration: BoxDecoration(
-                                    color: Colors.white
-                                        .withValues(alpha: 0.16),
-                                    borderRadius:
-                                    BorderRadius.circular(32),
+                                    color: Colors.white.withValues(alpha: 0.16),
+                                    borderRadius: BorderRadius.circular(32),
                                     border: Border.all(
-                                      color: Colors.white
-                                          .withValues(alpha: 0.35),
+                                      color: Colors.white.withValues(
+                                        alpha: 0.35,
+                                      ),
                                       width: 1.5,
                                     ),
                                   ),
@@ -251,8 +227,7 @@ class _WelcomePageState extends State<WelcomePage>
                                     ),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius:
-                                      BorderRadius.circular(20),
+                                      borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: const Row(
                                       mainAxisSize: MainAxisSize.min,
@@ -288,9 +263,7 @@ class _WelcomePageState extends State<WelcomePage>
                           decoration: BoxDecoration(
                             color: Colors.white.withValues(alpha: 0.82),
                             borderRadius: BorderRadius.circular(30),
-                            border: Border.all(
-                              color: const Color(0xFFE4E1FF),
-                            ),
+                            border: Border.all(color: const Color(0xFFE4E1FF)),
                           ),
                           child: const Row(
                             mainAxisSize: MainAxisSize.min,
@@ -327,7 +300,7 @@ class _WelcomePageState extends State<WelcomePage>
                         const SizedBox(height: 14),
                         const Text(
                           'Keep assignments organized, set priorities, '
-                              'and never lose track of a deadline.',
+                          'and never lose track of a deadline.',
                           style: TextStyle(
                             fontSize: 15,
                             height: 1.55,
@@ -357,8 +330,7 @@ class _WelcomePageState extends State<WelcomePage>
                               backgroundColor: primaryColor,
                               foregroundColor: Colors.white,
                               elevation: 4,
-                              shadowColor:
-                              primaryColor.withValues(alpha: 0.3),
+                              shadowColor: primaryColor.withValues(alpha: 0.3),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18),
                               ),
@@ -367,8 +339,7 @@ class _WelcomePageState extends State<WelcomePage>
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                  const LoginPage(),
+                                  builder: (context) => const LoginPage(),
                                 ),
                               );
                             },
@@ -383,10 +354,7 @@ class _WelcomePageState extends State<WelcomePage>
                                   ),
                                 ),
                                 SizedBox(width: 10),
-                                Icon(
-                                  Icons.arrow_forward_rounded,
-                                  size: 20,
-                                ),
+                                Icon(Icons.arrow_forward_rounded, size: 20),
                               ],
                             ),
                           ),
@@ -417,10 +385,7 @@ class _WelcomePageState extends State<WelcomePage>
 }
 
 class _WelcomeFeature extends StatelessWidget {
-  const _WelcomeFeature({
-    required this.icon,
-    required this.label,
-  });
+  const _WelcomeFeature({required this.icon, required this.label});
 
   final IconData icon;
   final String label;
@@ -444,18 +409,18 @@ class _WelcomeFeature extends StatelessWidget {
     );
   }
 }
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
+
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController =
-  TextEditingController();
-  final TextEditingController _passwordController =
-  TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   bool _hidePassword = true;
 
@@ -470,9 +435,7 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (context) => const TaskHomePage(),
-        ),
+        MaterialPageRoute(builder: (context) => const TaskHomePage()),
       );
     }
   }
@@ -519,10 +482,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 8),
                 const Text(
                   'Sign in to organize your study tasks.',
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.black54,
-                  ),
+                  style: TextStyle(fontSize: 15, color: Colors.black54),
                 ),
                 const SizedBox(height: 32),
                 const Text(
@@ -609,10 +569,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text(
                     'Demo login: any valid email and a 6+ character password',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.black45,
-                    ),
+                    style: TextStyle(fontSize: 12, color: Colors.black45),
                   ),
                 ),
               ],
@@ -642,12 +599,23 @@ class StudentTask {
 
 String _formatTaskDate(DateTime date) {
   const months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
 
   return '${date.day} ${months[date.month - 1]} ${date.year}';
 }
+
 class TaskHomePage extends StatefulWidget {
   const TaskHomePage({super.key});
 
@@ -666,16 +634,12 @@ class _TaskHomePageState extends State<TaskHomePage> {
       title: 'Study Flutter widgets',
       subject: 'Mobile App Development',
     ),
-    StudentTask(
-      title: 'Prepare lab report',
-      subject: 'Software Engineering',
-    ),
+    StudentTask(title: 'Prepare lab report', subject: 'Software Engineering'),
   ];
 
   String _selectedFilter = 'All';
 
-  int get _completedCount =>
-      _tasks.where((task) => task.isCompleted).length;
+  int get _completedCount => _tasks.where((task) => task.isCompleted).length;
 
   List<StudentTask> get _visibleTasks {
     if (_selectedFilter == 'Completed') {
@@ -688,3 +652,257 @@ class _TaskHomePageState extends State<TaskHomePage> {
 
     return _tasks;
   }
+
+  Future<void> _showAddTaskDialog() async {
+    final titleController = TextEditingController();
+    final subjectController = TextEditingController();
+
+    String selectedPriority = 'Medium';
+    DateTime? selectedDueDate;
+
+    final formKey = GlobalKey<FormState>();
+
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              title: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFEDEBFF),
+                      borderRadius: BorderRadius.circular(13),
+                    ),
+                    child: const Icon(
+                      Icons.add_task_rounded,
+                      color: primaryColor,
+                      size: 23,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Add a task',
+                          style: TextStyle(fontWeight: FontWeight.w800),
+                        ),
+                        SizedBox(height: 3),
+                        Text(
+                          'Set a priority and deadline',
+                          style: TextStyle(fontSize: 12, color: Colors.black54),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              content: SizedBox(
+                width: 420,
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextFormField(
+                          controller: titleController,
+                          textCapitalization: TextCapitalization.sentences,
+                          decoration: const InputDecoration(
+                            labelText: 'Task name',
+                            hintText: 'e.g. Read Chapter 7',
+                            prefixIcon: Icon(Icons.edit_note_rounded),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Enter a task name';
+                            }
+
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 12),
+                        TextFormField(
+                          controller: subjectController,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: const InputDecoration(
+                            labelText: 'Subject',
+                            hintText: 'e.g. Flutter',
+                            prefixIcon: Icon(Icons.menu_book_rounded),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Enter a subject';
+                            }
+
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 18),
+                        const Text(
+                          'Priority',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Wrap(
+                          spacing: 8,
+                          children: ['High', 'Medium', 'Low'].map((priority) {
+                            final selected = selectedPriority == priority;
+
+                            final color = priority == 'High'
+                                ? const Color(0xFFD94F5C)
+                                : priority == 'Medium'
+                                ? const Color(0xFFD18A18)
+                                : const Color(0xFF159B74);
+
+                            return ChoiceChip(
+                              label: Text(priority),
+                              selected: selected,
+                              avatar: Icon(
+                                priority == 'High'
+                                    ? Icons.keyboard_double_arrow_up_rounded
+                                    : priority == 'Medium'
+                                    ? Icons.drag_handle_rounded
+                                    : Icons.keyboard_double_arrow_down_rounded,
+                                size: 17,
+                                color: selected ? Colors.white : color,
+                              ),
+                              selectedColor: color,
+                              labelStyle: TextStyle(
+                                color: selected ? Colors.white : color,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              onSelected: (_) {
+                                setDialogState(() {
+                                  selectedPriority = priority;
+                                });
+                              },
+                            );
+                          }).toList(),
+                        ),
+                        const SizedBox(height: 18),
+                        const Text(
+                          'Due date',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        OutlinedButton.icon(
+                          style: OutlinedButton.styleFrom(
+                            minimumSize: const Size(double.infinity, 48),
+                            alignment: Alignment.centerLeft,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                          ),
+                          icon: const Icon(Icons.calendar_month_rounded),
+                          label: Text(
+                            selectedDueDate == null
+                                ? 'Choose date from calendar'
+                                : _formatTaskDate(selectedDueDate!),
+                          ),
+                          onPressed: () async {
+                            final today = DateTime.now();
+
+                            final picked = await showDatePicker(
+                              context: dialogContext,
+                              initialDate: selectedDueDate ?? today,
+                              firstDate: DateTime(today.year - 1),
+                              lastDate: DateTime(today.year + 10),
+                              helpText: 'SELECT TASK DUE DATE',
+                              builder: (context, child) {
+                                return Theme(
+                                  data: Theme.of(context).copyWith(
+                                    colorScheme: ColorScheme.fromSeed(
+                                      seedColor: primaryColor,
+                                    ),
+                                  ),
+                                  child: child!,
+                                );
+                              },
+                            );
+
+                            if (picked != null) {
+                              setDialogState(() {
+                                selectedDueDate = picked;
+                              });
+                            }
+                          },
+                        ),
+                        if (selectedDueDate != null)
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: () {
+                                setDialogState(() {
+                                  selectedDueDate = null;
+                                });
+                              },
+                              child: const Text('Remove date'),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(dialogContext);
+                  },
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    if (!formKey.currentState!.validate()) {
+                      return;
+                    }
+
+                    setState(() {
+                      _tasks.add(
+                        StudentTask(
+                          title: titleController.text.trim(),
+                          subject: subjectController.text.trim(),
+                          priority: selectedPriority,
+                          dueDate: selectedDueDate,
+                        ),
+                      );
+                    });
+
+                    Navigator.pop(dialogContext);
+                  },
+                  icon: const Icon(Icons.add_rounded),
+                  label: const Text('Add task'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    titleController.dispose();
+    subjectController.dispose();
+  }
+
+  void _deleteTask(StudentTask task) {
+    setState(() {
+      _tasks.remove(task);
+    });
+
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text('Task deleted')));
+  }
+}
