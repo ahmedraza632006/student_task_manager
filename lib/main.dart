@@ -8,6 +8,10 @@ const Color primaryColor = Color(0xFF5146E5);
 const Color darkColor = Color(0xFF202044);
 const Color backgroundColor = Color(0xFFF6F7FB);
 
+class MyApp extends StudentTaskManagerApp {
+  const MyApp({super.key});
+}
+
 class StudentTaskManagerApp extends StatelessWidget {
   const StudentTaskManagerApp({super.key});
 
@@ -624,18 +628,7 @@ class TaskHomePage extends StatefulWidget {
 }
 
 class _TaskHomePageState extends State<TaskHomePage> {
-  final List<StudentTask> _tasks = [
-    StudentTask(
-      title: 'Complete HCI assignment',
-      subject: 'Human Computer Interaction',
-      isCompleted: true,
-    ),
-    StudentTask(
-      title: 'Study Flutter widgets',
-      subject: 'Mobile App Development',
-    ),
-    StudentTask(title: 'Prepare lab report', subject: 'Software Engineering'),
-  ];
+  final List<StudentTask> _tasks = [];
 
   String _selectedFilter = 'All';
 
@@ -662,7 +655,7 @@ class _TaskHomePageState extends State<TaskHomePage> {
 
     final formKey = GlobalKey<FormState>();
 
-    await showDialog<void>(
+    final newTask = await showDialog<StudentTask>(
       context: context,
       builder: (dialogContext) {
         return StatefulBuilder(
@@ -870,18 +863,15 @@ class _TaskHomePageState extends State<TaskHomePage> {
                       return;
                     }
 
-                    setState(() {
-                      _tasks.add(
-                        StudentTask(
-                          title: titleController.text.trim(),
-                          subject: subjectController.text.trim(),
-                          priority: selectedPriority,
-                          dueDate: selectedDueDate,
-                        ),
-                      );
-                    });
-
-                    Navigator.pop(dialogContext);
+                    Navigator.pop(
+                      dialogContext,
+                      StudentTask(
+                        title: titleController.text.trim(),
+                        subject: subjectController.text.trim(),
+                        priority: selectedPriority,
+                        dueDate: selectedDueDate,
+                      ),
+                    );
                   },
                   icon: const Icon(Icons.add_rounded),
                   label: const Text('Add task'),
@@ -893,8 +883,14 @@ class _TaskHomePageState extends State<TaskHomePage> {
       },
     );
 
-    titleController.dispose();
-    subjectController.dispose();
+    // The dialog's reverse transition may still be using these controllers
+    // immediately after showDialog completes. Avoid disposing them here.
+
+    if (newTask != null && mounted) {
+      setState(() {
+        _tasks.add(newTask);
+      });
+    }
   }
 
   void _deleteTask(StudentTask task) {
@@ -905,128 +901,361 @@ class _TaskHomePageState extends State<TaskHomePage> {
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Task deleted')));
   }
-}
-@override
-Widget build(BuildContext context) {
-  final visibleTasks = _visibleTasks;
 
-  return Scaffold(
-    appBar: AppBar(
-      title: const Text(
-        'My Tasks',
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-      actions: [
-        IconButton(
-          tooltip: 'Log out',
-          onPressed: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const WelcomePage(),
-              ),
-                  (route) => false,
-            );
-          },
-          icon: const Icon(Icons.logout_rounded),
+  @override
+  Widget build(BuildContext context) {
+    final visibleTasks = _visibleTasks;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'My Tasks',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        const SizedBox(width: 8),
-      ],
-    ),
-    floatingActionButton: FloatingActionButton.extended(
-      onPressed: _showAddTaskDialog,
-      backgroundColor: primaryColor,
-      foregroundColor: Colors.white,
-      icon: const Icon(Icons.add_rounded),
-      label: const Text('Add task'),
-    ),
-    body: SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 90),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Small steps, big progress.',
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 15,
+        actions: [
+          IconButton(
+            tooltip: 'Log out',
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const WelcomePage()),
+                (route) => false,
+              );
+            },
+            icon: const Icon(Icons.logout_rounded),
+          ),
+          const SizedBox(width: 8),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _showAddTaskDialog,
+        backgroundColor: primaryColor,
+        foregroundColor: Colors.white,
+        icon: const Icon(Icons.add_rounded),
+        label: const Text('Add task'),
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 90),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Small steps, big progress.',
+                style: TextStyle(color: Colors.black54, fontSize: 15),
               ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: SummaryCard(
+                      title: 'Total tasks',
+                      value: _tasks.length.toString(),
+                      icon: Icons.checklist_rounded,
+                      color: primaryColor,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: SummaryCard(
+                      title: 'Completed',
+                      value: _completedCount.toString(),
+                      icon: Icons.task_alt_rounded,
+                      color: const Color(0xFF159B74),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Your list',
+                style: TextStyle(
+                  color: darkColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Wrap(
+                spacing: 8,
+                children: ['All', 'Pending', 'Completed'].map((filter) {
+                  return ChoiceChip(
+                    label: Text(filter),
+                    selected: _selectedFilter == filter,
+                    selectedColor: const Color(0xFFE5E3FF),
+                    onSelected: (selected) {
+                      setState(() {
+                        _selectedFilter = filter;
+                      });
+                    },
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 14),
+              Expanded(
+                child: visibleTasks.isEmpty
+                    ? const EmptyTaskView()
+                    : ListView.separated(
+                        itemCount: visibleTasks.length,
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 10),
+                        itemBuilder: (context, index) {
+                          final task = visibleTasks[index];
+
+                          return TaskTile(
+                            task: task,
+                            onToggle: (value) {
+                              setState(() {
+                                task.isCompleted = value;
+                              });
+                            },
+                            onDelete: () => _deleteTask(task),
+                          );
+                        },
+                      ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Reusable summary card
+class SummaryCard extends StatelessWidget {
+  const SummaryCard({
+    super.key,
+    required this.title,
+    required this.value,
+    required this.icon,
+    required this.color,
+  });
+
+  final String title;
+  final String value;
+  final IconData icon;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFECECF3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: color, size: 25),
+          const SizedBox(height: 14),
+          Text(
+            value,
+            style: const TextStyle(
+              color: darkColor,
+              fontSize: 27,
+              fontWeight: FontWeight.bold,
             ),
-            const SizedBox(height: 20),
-            Row(
+          ),
+          const SizedBox(height: 3),
+          Text(
+            title,
+            style: const TextStyle(fontSize: 12, color: Colors.black54),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Reusable task card
+class TaskTile extends StatelessWidget {
+  const TaskTile({
+    super.key,
+    required this.task,
+    required this.onToggle,
+    required this.onDelete,
+  });
+
+  final StudentTask task;
+  final ValueChanged<bool> onToggle;
+  final VoidCallback onDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    final priorityColor = task.priority == 'High'
+        ? const Color(0xFFD94F5C)
+        : task.priority == 'Medium'
+        ? const Color(0xFFD18A18)
+        : const Color(0xFF159B74);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 13),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: const Color(0xFFECECF3)),
+      ),
+      child: Row(
+        children: [
+          Checkbox(
+            value: task.isCompleted,
+            activeColor: primaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            onChanged: (value) {
+              if (value != null) {
+                onToggle(value);
+              }
+            },
+          ),
+          const SizedBox(width: 4),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: SummaryCard(
-                    title: 'Total tasks',
-                    value: _tasks.length.toString(),
-                    icon: Icons.checklist_rounded,
-                    color: primaryColor,
+                Text(
+                  task.title,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: task.isCompleted ? Colors.black45 : darkColor,
+                    decoration: task.isCompleted
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: SummaryCard(
-                    title: 'Completed',
-                    value: _completedCount.toString(),
-                    icon: Icons.task_alt_rounded,
-                    color: const Color(0xFF159B74),
-                  ),
+                const SizedBox(height: 5),
+                Text(
+                  task.subject,
+                  style: const TextStyle(fontSize: 12, color: Colors.black54),
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 7,
+                  runSpacing: 5,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: priorityColor.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        '${task.priority} priority',
+                        style: TextStyle(
+                          color: priorityColor,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    if (task.dueDate != null)
+                      Builder(
+                        builder: (context) {
+                          final now = DateTime.now();
+
+                          final today = DateTime(now.year, now.month, now.day);
+
+                          final due = DateTime(
+                            task.dueDate!.year,
+                            task.dueDate!.month,
+                            task.dueDate!.day,
+                          );
+
+                          final isOverdue =
+                              due.isBefore(today) && !task.isCompleted;
+
+                          final isDueToday = due == today;
+
+                          final dateColor = isOverdue
+                              ? const Color(0xFFD94F5C)
+                              : isDueToday
+                              ? const Color(0xFFD18A18)
+                              : Colors.black54;
+
+                          final dateLabel = isOverdue
+                              ? 'Overdue • ${_formatTaskDate(task.dueDate!)}'
+                              : isDueToday
+                              ? 'Due today'
+                              : _formatTaskDate(task.dueDate!);
+
+                          return Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.calendar_today_rounded,
+                                size: 12,
+                                color: dateColor,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                dateLabel,
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: dateColor,
+                                  fontWeight: isOverdue || isDueToday
+                                      ? FontWeight.w700
+                                      : FontWeight.normal,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                  ],
                 ),
               ],
             ),
-            const SizedBox(height: 24),
-            const Text(
-              'Your list',
-              style: TextStyle(
-                color: darkColor,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+          ),
+          IconButton(
+            tooltip: 'Delete task',
+            onPressed: onDelete,
+            icon: const Icon(
+              Icons.delete_outline_rounded,
+              color: Color(0xFFCE5260),
             ),
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: 8,
-              children: ['All', 'Pending', 'Completed'].map((filter) {
-                return ChoiceChip(
-                  label: Text(filter),
-                  selected: _selectedFilter == filter,
-                  selectedColor: const Color(0xFFE5E3FF),
-                  onSelected: (selected) {
-                    setState(() {
-                      _selectedFilter = filter;
-                    });
-                  },
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 14),
-            Expanded(
-              child: visibleTasks.isEmpty
-                  ? const EmptyTaskView()
-                  : ListView.separated(
-                itemCount: visibleTasks.length,
-                separatorBuilder: (context, index) =>
-                const SizedBox(height: 10),
-                itemBuilder: (context, index) {
-                  final task = visibleTasks[index];
-
-                  return TaskTile(
-                    task: task,
-                    onToggle: (value) {
-                      setState(() {
-                        task.isCompleted = value;
-                      });
-                    },
-                    onDelete: () => _deleteTask(task),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
-    ),
-  );
+    );
+  }
 }
+
+class EmptyTaskView extends StatelessWidget {
+  const EmptyTaskView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.inbox_outlined, size: 58, color: Colors.grey.shade400),
+          const SizedBox(height: 12),
+          const Text(
+            'No tasks here',
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.w600,
+              color: darkColor,
+            ),
+          ),
+          const SizedBox(height: 6),
+          const Text(
+            'Add a task or choose another filter.',
+            style: TextStyle(color: Colors.black54),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
 }
