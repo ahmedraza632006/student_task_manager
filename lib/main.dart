@@ -906,3 +906,127 @@ class _TaskHomePageState extends State<TaskHomePage> {
         .showSnackBar(const SnackBar(content: Text('Task deleted')));
   }
 }
+@override
+Widget build(BuildContext context) {
+  final visibleTasks = _visibleTasks;
+
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text(
+        'My Tasks',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      actions: [
+        IconButton(
+          tooltip: 'Log out',
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const WelcomePage(),
+              ),
+                  (route) => false,
+            );
+          },
+          icon: const Icon(Icons.logout_rounded),
+        ),
+        const SizedBox(width: 8),
+      ],
+    ),
+    floatingActionButton: FloatingActionButton.extended(
+      onPressed: _showAddTaskDialog,
+      backgroundColor: primaryColor,
+      foregroundColor: Colors.white,
+      icon: const Icon(Icons.add_rounded),
+      label: const Text('Add task'),
+    ),
+    body: SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 90),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Small steps, big progress.',
+              style: TextStyle(
+                color: Colors.black54,
+                fontSize: 15,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: SummaryCard(
+                    title: 'Total tasks',
+                    value: _tasks.length.toString(),
+                    icon: Icons.checklist_rounded,
+                    color: primaryColor,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: SummaryCard(
+                    title: 'Completed',
+                    value: _completedCount.toString(),
+                    icon: Icons.task_alt_rounded,
+                    color: const Color(0xFF159B74),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'Your list',
+              style: TextStyle(
+                color: darkColor,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              children: ['All', 'Pending', 'Completed'].map((filter) {
+                return ChoiceChip(
+                  label: Text(filter),
+                  selected: _selectedFilter == filter,
+                  selectedColor: const Color(0xFFE5E3FF),
+                  onSelected: (selected) {
+                    setState(() {
+                      _selectedFilter = filter;
+                    });
+                  },
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 14),
+            Expanded(
+              child: visibleTasks.isEmpty
+                  ? const EmptyTaskView()
+                  : ListView.separated(
+                itemCount: visibleTasks.length,
+                separatorBuilder: (context, index) =>
+                const SizedBox(height: 10),
+                itemBuilder: (context, index) {
+                  final task = visibleTasks[index];
+
+                  return TaskTile(
+                    task: task,
+                    onToggle: (value) {
+                      setState(() {
+                        task.isCompleted = value;
+                      });
+                    },
+                    onDelete: () => _deleteTask(task),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+}
