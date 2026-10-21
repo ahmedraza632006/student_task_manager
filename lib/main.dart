@@ -510,7 +510,6 @@ class _LoginPageState extends State<LoginPage> {
 
     if (!mounted) return;
 
-    // Email signup ke baad login form mein aa jayegi.
     setState(() {});
   }
 
@@ -1306,8 +1305,6 @@ class _TaskHomePageState extends State<TaskHomePage> {
         );
       },
     );
-
-    // Dialog transition ke dauran controllers dispose nahi kar rahe.
 
     if (newTask != null && mounted) {
       setState(() {
