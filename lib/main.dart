@@ -8,6 +8,8 @@ const Color primaryColor = Color(0xFF5146E5);
 const Color darkColor = Color(0xFF202044);
 const Color backgroundColor = Color(0xFFF6F7FB);
 
+final Map<String, Map<String, String>> registeredUsers = {};
+
 class MyApp extends StudentTaskManagerApp {
   const MyApp({super.key});
 }
@@ -43,7 +45,10 @@ class StudentTaskManagerApp extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
-            borderSide: const BorderSide(color: primaryColor, width: 1.5),
+            borderSide: const BorderSide(
+              color: primaryColor,
+              width: 1.5,
+            ),
           ),
         ),
       ),
@@ -74,12 +79,20 @@ class _WelcomePageState extends State<WelcomePage>
       vsync: this,
     );
 
-    _fadeAnimation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
+    _fadeAnimation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeIn,
+    );
 
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0, 0.12),
       end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeOutCubic,
+      ),
+    );
 
     _controller.forward();
   }
@@ -98,7 +111,11 @@ class _WelcomePageState extends State<WelcomePage>
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFFF7F6FF), Color(0xFFEEEAFE), Colors.white],
+            colors: [
+              Color(0xFFF7F6FF),
+              Color(0xFFEEEAFE),
+              Colors.white,
+            ],
           ),
         ),
         child: SafeArea(
@@ -115,7 +132,8 @@ class _WelcomePageState extends State<WelcomePage>
                       height: 180,
                       width: 180,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFDCD8FF).withValues(alpha: 0.55),
+                        color: const Color(0xFFDCD8FF)
+                            .withValues(alpha: 0.55),
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -127,7 +145,8 @@ class _WelcomePageState extends State<WelcomePage>
                       height: 145,
                       width: 145,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE6F7F2).withValues(alpha: 0.8),
+                        color: const Color(0xFFE6F7F2)
+                            .withValues(alpha: 0.8),
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -179,7 +198,10 @@ class _WelcomePageState extends State<WelcomePage>
                               gradient: const LinearGradient(
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
-                                colors: [Color(0xFF7770F2), primaryColor],
+                                colors: [
+                                  Color(0xFF7770F2),
+                                  primaryColor,
+                                ],
                               ),
                               borderRadius: BorderRadius.circular(56),
                               boxShadow: const [
@@ -198,7 +220,9 @@ class _WelcomePageState extends State<WelcomePage>
                                   right: 25,
                                   child: Icon(
                                     Icons.auto_awesome_rounded,
-                                    color: Colors.white.withValues(alpha: 0.8),
+                                    color: Colors.white.withValues(
+                                      alpha: 0.8,
+                                    ),
                                     size: 28,
                                   ),
                                 ),
@@ -206,7 +230,9 @@ class _WelcomePageState extends State<WelcomePage>
                                   height: 135,
                                   width: 135,
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withValues(alpha: 0.16),
+                                    color: Colors.white.withValues(
+                                      alpha: 0.16,
+                                    ),
                                     borderRadius: BorderRadius.circular(32),
                                     border: Border.all(
                                       color: Colors.white.withValues(
@@ -267,7 +293,9 @@ class _WelcomePageState extends State<WelcomePage>
                           decoration: BoxDecoration(
                             color: Colors.white.withValues(alpha: 0.82),
                             borderRadius: BorderRadius.circular(30),
-                            border: Border.all(color: const Color(0xFFE4E1FF)),
+                            border: Border.all(
+                              color: const Color(0xFFE4E1FF),
+                            ),
                           ),
                           child: const Row(
                             mainAxisSize: MainAxisSize.min,
@@ -304,7 +332,7 @@ class _WelcomePageState extends State<WelcomePage>
                         const SizedBox(height: 14),
                         const Text(
                           'Keep assignments organized, set priorities, '
-                          'and never lose track of a deadline.',
+                              'and never lose track of a deadline.',
                           style: TextStyle(
                             fontSize: 15,
                             height: 1.55,
@@ -334,7 +362,9 @@ class _WelcomePageState extends State<WelcomePage>
                               backgroundColor: primaryColor,
                               foregroundColor: Colors.white,
                               elevation: 4,
-                              shadowColor: primaryColor.withValues(alpha: 0.3),
+                              shadowColor: primaryColor.withValues(
+                                alpha: 0.3,
+                              ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18),
                               ),
@@ -358,7 +388,10 @@ class _WelcomePageState extends State<WelcomePage>
                                   ),
                                 ),
                                 SizedBox(width: 10),
-                                Icon(Icons.arrow_forward_rounded, size: 20),
+                                Icon(
+                                  Icons.arrow_forward_rounded,
+                                  size: 20,
+                                ),
                               ],
                             ),
                           ),
@@ -389,7 +422,10 @@ class _WelcomePageState extends State<WelcomePage>
 }
 
 class _WelcomeFeature extends StatelessWidget {
-  const _WelcomeFeature({required this.icon, required this.label});
+  const _WelcomeFeature({
+    required this.icon,
+    required this.label,
+  });
 
   final IconData icon;
   final String label;
@@ -436,12 +472,46 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _login() {
-    if (_formKey.currentState!.validate()) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const TaskHomePage()),
-      );
+    if (!_formKey.currentState!.validate()) {
+      return;
     }
+
+    final email = _emailController.text.trim().toLowerCase();
+    final password = _passwordController.text;
+
+    final user = registeredUsers[email];
+
+    if (user == null || user['password'] != password) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Account not found or password is incorrect. Please sign up first.',
+          ),
+        ),
+      );
+      return;
+    }
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const TaskHomePage(),
+      ),
+    );
+  }
+
+  Future<void> _openSignUp() async {
+    await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SignUpPage(),
+      ),
+    );
+
+    if (!mounted) return;
+
+    // Email signup ke baad login form mein aa jayegi.
+    setState(() {});
   }
 
   @override
@@ -486,7 +556,10 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 8),
                 const Text(
                   'Sign in to organize your study tasks.',
-                  style: TextStyle(fontSize: 15, color: Colors.black54),
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black54,
+                  ),
                 ),
                 const SizedBox(height: 32),
                 const Text(
@@ -505,9 +578,11 @@ class _LoginPageState extends State<LoginPage> {
                     if (value == null || value.trim().isEmpty) {
                       return 'Please enter your email';
                     }
+
                     if (!value.contains('@') || !value.contains('.')) {
                       return 'Enter a valid email address';
                     }
+
                     return null;
                   },
                 ),
@@ -540,9 +615,11 @@ class _LoginPageState extends State<LoginPage> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your password';
                     }
+
                     if (value.length < 6) {
                       return 'Use at least 6 characters';
                     }
+
                     return null;
                   },
                 ),
@@ -568,12 +645,350 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 18),
+                Center(
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      const Text(
+                        "Don't have an account? ",
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.black54,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: _openSignUp,
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: const Text(
+                          'Sign Up Now',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
+
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final TextEditingController _firstNameController =
+  TextEditingController();
+  final TextEditingController _secondNameController =
+  TextEditingController();
+  final TextEditingController _emailController =
+  TextEditingController();
+  final TextEditingController _passwordController =
+  TextEditingController();
+  final TextEditingController _confirmPasswordController =
+  TextEditingController();
+
+  bool _hidePassword = true;
+  bool _hideConfirmPassword = true;
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _secondNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  String? _validateName(String? value, String fieldName) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Please enter $fieldName';
+    }
+    return null;
+  }
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Please enter your email';
+    }
+
+    final email = value.trim();
+
+    if (!email.contains('@') || !email.contains('.')) {
+      return 'Enter a valid email address';
+    }
+
+    if (registeredUsers.containsKey(email.toLowerCase())) {
+      return 'This email is already registered';
+    }
+
+    return null;
+  }
+
+  void _signUp() {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    final email = _emailController.text.trim().toLowerCase();
+
+    registeredUsers[email] = {
+      'firstName': _firstNameController.text.trim(),
+      'secondName': _secondNameController.text.trim(),
+      'email': email,
+      'password': _passwordController.text,
+    };
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Account created successfully! Please log in.'),
+      ),
+    );
+
+    Navigator.pop(context, true);
+  }
+
+  Widget _buildLabel(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontWeight: FontWeight.w600,
+          color: darkColor,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          'Create account',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(24, 12, 24, 28),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 66,
+                  width: 66,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE9E7FF),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Icon(
+                    Icons.person_add_alt_1_rounded,
+                    color: primaryColor,
+                    size: 34,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                const Text(
+                  'Create your account',
+                  style: TextStyle(
+                    fontSize: 28,
+                    color: darkColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Sign up to start organizing your study tasks.',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.black54,
+                  ),
+                ),
+                const SizedBox(height: 28),
+
+                _buildLabel('First Name'),
+                TextFormField(
+                  controller: _firstNameController,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter your first name',
+                    prefixIcon: Icon(Icons.person_outline_rounded),
+                  ),
+                  validator: (value) =>
+                      _validateName(value, 'your first name'),
+                ),
+                const SizedBox(height: 18),
+
+                _buildLabel('Second Name'),
+                TextFormField(
+                  controller: _secondNameController,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter your second name',
+                    prefixIcon: Icon(Icons.person_outline_rounded),
+                  ),
+                  validator: (value) =>
+                      _validateName(value, 'your second name'),
+                ),
+                const SizedBox(height: 18),
+
+                _buildLabel('Email Address'),
+                TextFormField(
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(
+                    hintText: 'student@example.com',
+                    prefixIcon: Icon(Icons.email_outlined),
+                  ),
+                  validator: _validateEmail,
+                ),
+                const SizedBox(height: 18),
+
+                _buildLabel('Password'),
+                TextFormField(
+                  controller: _passwordController,
+                  obscureText: _hidePassword,
+                  decoration: InputDecoration(
+                    hintText: 'Create a password',
+                    prefixIcon: const Icon(Icons.lock_outline_rounded),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _hidePassword
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _hidePassword = !_hidePassword;
+                        });
+                      },
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please create a password';
+                    }
+
+                    if (value.length < 6) {
+                      return 'Use at least 6 characters';
+                    }
+
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 18),
+
+                _buildLabel('Confirm Password'),
+                TextFormField(
+                  controller: _confirmPasswordController,
+                  obscureText: _hideConfirmPassword,
+                  decoration: InputDecoration(
+                    hintText: 'Re-enter your password',
+                    prefixIcon: const Icon(Icons.lock_outline_rounded),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _hideConfirmPassword
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _hideConfirmPassword = !_hideConfirmPassword;
+                        });
+                      },
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please confirm your password';
+                    }
+
+                    if (value != _passwordController.text) {
+                      return 'Passwords do not match';
+                    }
+
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 28),
+
+                SizedBox(
+                  height: 54,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _signUp,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColor,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    child: const Text(
+                      'Create Account',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 16),
-                const Center(
-                  child: Text(
-                    'Demo login: any valid email and a 6+ character password',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 12, color: Colors.black45),
+                Center(
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      const Text(
+                        'Already have an account? ',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.black54,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: const Text(
+                          'Login',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -632,7 +1047,8 @@ class _TaskHomePageState extends State<TaskHomePage> {
 
   String _selectedFilter = 'All';
 
-  int get _completedCount => _tasks.where((task) => task.isCompleted).length;
+  int get _completedCount =>
+      _tasks.where((task) => task.isCompleted).length;
 
   List<StudentTask> get _visibleTasks {
     if (_selectedFilter == 'Completed') {
@@ -688,7 +1104,10 @@ class _TaskHomePageState extends State<TaskHomePage> {
                         SizedBox(height: 3),
                         Text(
                           'Set a priority and deadline',
-                          style: TextStyle(fontSize: 12, color: Colors.black54),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.black54,
+                          ),
                         ),
                       ],
                     ),
@@ -706,7 +1125,8 @@ class _TaskHomePageState extends State<TaskHomePage> {
                       children: [
                         TextFormField(
                           controller: titleController,
-                          textCapitalization: TextCapitalization.sentences,
+                          textCapitalization:
+                          TextCapitalization.sentences,
                           decoration: const InputDecoration(
                             labelText: 'Task name',
                             hintText: 'e.g. Read Chapter 7',
@@ -716,7 +1136,6 @@ class _TaskHomePageState extends State<TaskHomePage> {
                             if (value == null || value.trim().isEmpty) {
                               return 'Enter a task name';
                             }
-
                             return null;
                           },
                         ),
@@ -733,7 +1152,6 @@ class _TaskHomePageState extends State<TaskHomePage> {
                             if (value == null || value.trim().isEmpty) {
                               return 'Enter a subject';
                             }
-
                             return null;
                           },
                         ),
@@ -749,7 +1167,8 @@ class _TaskHomePageState extends State<TaskHomePage> {
                         Wrap(
                           spacing: 8,
                           children: ['High', 'Medium', 'Low'].map((priority) {
-                            final selected = selectedPriority == priority;
+                            final selected =
+                                selectedPriority == priority;
 
                             final color = priority == 'High'
                                 ? const Color(0xFFD94F5C)
@@ -762,10 +1181,12 @@ class _TaskHomePageState extends State<TaskHomePage> {
                               selected: selected,
                               avatar: Icon(
                                 priority == 'High'
-                                    ? Icons.keyboard_double_arrow_up_rounded
+                                    ? Icons
+                                    .keyboard_double_arrow_up_rounded
                                     : priority == 'Medium'
                                     ? Icons.drag_handle_rounded
-                                    : Icons.keyboard_double_arrow_down_rounded,
+                                    : Icons
+                                    .keyboard_double_arrow_down_rounded,
                                 size: 17,
                                 color: selected ? Colors.white : color,
                               ),
@@ -793,13 +1214,16 @@ class _TaskHomePageState extends State<TaskHomePage> {
                         const SizedBox(height: 8),
                         OutlinedButton.icon(
                           style: OutlinedButton.styleFrom(
-                            minimumSize: const Size(double.infinity, 48),
+                            minimumSize:
+                            const Size(double.infinity, 48),
                             alignment: Alignment.centerLeft,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14),
                             ),
                           ),
-                          icon: const Icon(Icons.calendar_month_rounded),
+                          icon: const Icon(
+                            Icons.calendar_month_rounded,
+                          ),
                           label: Text(
                             selectedDueDate == null
                                 ? 'Choose date from calendar'
@@ -883,8 +1307,7 @@ class _TaskHomePageState extends State<TaskHomePage> {
       },
     );
 
-    // The dialog's reverse transition may still be using these controllers
-    // immediately after showDialog completes. Avoid disposing them here.
+    // Dialog transition ke dauran controllers dispose nahi kar rahe.
 
     if (newTask != null && mounted) {
       setState(() {
@@ -898,8 +1321,9 @@ class _TaskHomePageState extends State<TaskHomePage> {
       _tasks.remove(task);
     });
 
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Task deleted')));
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Task deleted')),
+    );
   }
 
   @override
@@ -918,8 +1342,10 @@ class _TaskHomePageState extends State<TaskHomePage> {
             onPressed: () {
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => const WelcomePage()),
-                (route) => false,
+                MaterialPageRoute(
+                  builder: (context) => const WelcomePage(),
+                ),
+                    (route) => false,
               );
             },
             icon: const Icon(Icons.logout_rounded),
@@ -942,7 +1368,10 @@ class _TaskHomePageState extends State<TaskHomePage> {
             children: [
               const Text(
                 'Small steps, big progress.',
-                style: TextStyle(color: Colors.black54, fontSize: 15),
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 15,
+                ),
               ),
               const SizedBox(height: 20),
               Row(
@@ -996,23 +1425,23 @@ class _TaskHomePageState extends State<TaskHomePage> {
                 child: visibleTasks.isEmpty
                     ? const EmptyTaskView()
                     : ListView.separated(
-                        itemCount: visibleTasks.length,
-                        separatorBuilder: (context, index) =>
-                            const SizedBox(height: 10),
-                        itemBuilder: (context, index) {
-                          final task = visibleTasks[index];
+                  itemCount: visibleTasks.length,
+                  separatorBuilder: (context, index) =>
+                  const SizedBox(height: 10),
+                  itemBuilder: (context, index) {
+                    final task = visibleTasks[index];
 
-                          return TaskTile(
-                            task: task,
-                            onToggle: (value) {
-                              setState(() {
-                                task.isCompleted = value;
-                              });
-                            },
-                            onDelete: () => _deleteTask(task),
-                          );
-                        },
-                      ),
+                    return TaskTile(
+                      task: task,
+                      onToggle: (value) {
+                        setState(() {
+                          task.isCompleted = value;
+                        });
+                      },
+                      onDelete: () => _deleteTask(task),
+                    );
+                  },
+                ),
               ),
             ],
           ),
@@ -1022,7 +1451,6 @@ class _TaskHomePageState extends State<TaskHomePage> {
   }
 }
 
-// Reusable summary card
 class SummaryCard extends StatelessWidget {
   const SummaryCard({
     super.key,
@@ -1062,7 +1490,10 @@ class SummaryCard extends StatelessWidget {
           const SizedBox(height: 3),
           Text(
             title,
-            style: const TextStyle(fontSize: 12, color: Colors.black54),
+            style: const TextStyle(
+              fontSize: 12,
+              color: Colors.black54,
+            ),
           ),
         ],
       ),
@@ -1070,7 +1501,6 @@ class SummaryCard extends StatelessWidget {
   }
 }
 
-// Reusable task card
 class TaskTile extends StatelessWidget {
   const TaskTile({
     super.key,
@@ -1092,7 +1522,10 @@ class TaskTile extends StatelessWidget {
         : const Color(0xFF159B74);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 13),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 13,
+      ),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),
@@ -1122,7 +1555,9 @@ class TaskTile extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
-                    color: task.isCompleted ? Colors.black45 : darkColor,
+                    color: task.isCompleted
+                        ? Colors.black45
+                        : darkColor,
                     decoration: task.isCompleted
                         ? TextDecoration.lineThrough
                         : TextDecoration.none,
@@ -1131,7 +1566,10 @@ class TaskTile extends StatelessWidget {
                 const SizedBox(height: 5),
                 Text(
                   task.subject,
-                  style: const TextStyle(fontSize: 12, color: Colors.black54),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.black54,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Wrap(
@@ -1162,7 +1600,11 @@ class TaskTile extends StatelessWidget {
                         builder: (context) {
                           final now = DateTime.now();
 
-                          final today = DateTime(now.year, now.month, now.day);
+                          final today = DateTime(
+                            now.year,
+                            now.month,
+                            now.day,
+                          );
 
                           final due = DateTime(
                             task.dueDate!.year,
@@ -1201,7 +1643,8 @@ class TaskTile extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 11,
                                   color: dateColor,
-                                  fontWeight: isOverdue || isDueToday
+                                  fontWeight:
+                                  isOverdue || isDueToday
                                       ? FontWeight.w700
                                       : FontWeight.normal,
                                 ),
@@ -1238,7 +1681,11 @@ class EmptyTaskView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.inbox_outlined, size: 58, color: Colors.grey.shade400),
+          Icon(
+            Icons.inbox_outlined,
+            size: 58,
+            color: Colors.grey.shade400,
+          ),
           const SizedBox(height: 12),
           const Text(
             'No tasks here',
